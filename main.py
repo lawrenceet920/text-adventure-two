@@ -4,6 +4,7 @@
 
 # --- imports --- #
 from time import sleep
+import sys
 
 # --- Basic Global Variables --- #
 lives = 3
@@ -12,11 +13,19 @@ score = 0
 rucksack = ['key', 'duck', 'brush']
 
 # --- Functions --- #
+def gameover():
+    if lives <= 0:
+        print(f'You have run out of lives {name}')
+        print('GAME OVER')
+        lives_score()
+        sys.exit()
+
 def lives_score():
     '''List Score and lives'''
     print('\n*******************************')
     print(f'You have {lives} lives left.')
     print(f'Your score is: {score}.')
+    print(f'Your rucksack contains: {rucksack}')
     print('*******************************\n')
 # --- Welcome --- #
 
@@ -76,26 +85,98 @@ sleep(1)
 
 # --- Scenario 3 --- #
 
-print("You come across a large tree, for a second")
-print("you marval at it. you suddenly see a large troll!")
-print("You dont have much time!\n")
+print("Behind you, in the forest, there is a great ROAR!\n")
 sleep(2)
-
+print("You begin to run very quickly - fearing for your life\n")
+sleep(1)
+print("""Up ahead you see another house. Unlike the old
+      crone's cottage, it is warm, inviting and rather homely.\n""")
+print('You try the door, but it is locked!\n')
+sleep(1)
+print('The roaring and footsteps are right behind you. You need to make a quick decision!\n')
+print('Perhaps there is something in you back which can help?\n')
+print(f'You look in your rucksack and find: {rucksack}')
 # --- Choice 3 --- #
 
-choise3 = input('Press c to climb the tree, press a to attack it, or press r to run away: ')
-if choise3 == 'c':
-    print('You grab onto a branch.')
-    sleep(1)
-    print('Another, and another.')
-    sleep(1)
-    print('You are at the top!')
-    sleep(1)
-    print('You look down and see the troll grunt and walk away.')
+choise3 = input('Press k to use the key, press d to release the duck to buy you some time, or press b to throw the duck at the monster: ')
+if choise3 == 'k':
+    print('To your great luck, the key fits the door, and you fall into the house in the nick of time.')
     score += 5
-elif choise3 == 'a':
-    print('Turns out the club it weilds isn\'t for show... ow.')
-    lives -= 1
+    rucksack.remove('key')
+elif choise3 == 'd':
+    print('The duck quacks nervously as you pull it from the bag, but it seems to distrack the terrible monster following you\n')
+    score += 2
+    rucksack.remove('duck')
+
+    # Subchoice
+    choise3a = input('You still aren\'t in the house, press k to use the key, or b to throw the brush.')
+    if choise3a == 'k':
+        print("""The duck buys you enough time to use the key,
+and to your great fortune, it opens the door and you nip
+safely inside.""")
+        score += 3
+        rucksack.remove('key')
+    else:
+        print('You throw the brush at the monster, but like the duck before you, you are gobbled up in moments...!')
+        lives -= 1
+        rucksack.remove('brush')
+        gameover()
+    # End of subchoice
 else:
-    print('The troll is fast, but you are faster and excape!')
+    print('You throw the brush at the monster, but it bounces off its head and it gobbles you up instead.')
+    lives -= 1
+    rucksack.remove('brush')
+    gameover()
 lives_score()
+
+# --- Scenario 4 --- #
+print("""You look around yourself in the cottage. It is a
+very nice, homely and comfortable cottage. You get the
+feeling someone kind lives here\n""")
+sleep(1)
+print("""You look around yourself again and see a table with
+a cake1 Your stomach rumbles noisily. You did not realise how
+hungary you were. Beside the cake is a knife. You decide it
+wouldn't be a problem to slice the cake.\n""")
+sleep(1)
+
+# --- Choice 4 --- #
+choise4 = input('Press a to eat the cake now, or b to put in in your rucksack for later: ')
+if choise4 == "a":
+    print('You eat the cake. It\'s very delicous and you feel a bit better, even though that monster is still outside.')
+    score += 2
+else:
+    print('You carefully wrap and stow the cake for later.')
+    rucksack.append('cake')
+lives_score()
+
+# --- scenario 5 --- #
+print('The door to the cottage opens! You are suprised\n\n')
+sleep(2)
+print('Standing there is a little old man. He is suprised to see you too.\n')
+sleep(1)
+
+if 'cake' in rucksack:
+    print('The man sees the cake has been cut.')
+    sleep(1)
+    print('He asks if you took some of his cake')
+    sleep(1)
+    print('Guiltily, you nod and reveal the cake in your bag')
+    sleep(2)
+    print('He shrugs and says you can keep it for later')
+    print('He cuts you a new slice')
+    score += 30
+else:
+    print('The man sees the cake has been cut and there are crumbs round your mouth and on your clothes')
+    sleep(1)
+    print('He looks angry! He accuses you of stealing the cake')
+    print('He curses you!')
+    lives -= 1
+    gameover()
+lives_score()
+
+print('You have reached the end of the story {name} well done for avoid traps.')
+
+lives_score()
+
+print('THE END')
